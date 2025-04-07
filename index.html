@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elephant Detection</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      padding: 2rem;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    h1 {
+      color: #0070f3;
+      margin-bottom: 1rem;
+    }
+    p {
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .button {
+      display: inline-block;
+      background-color: #0070f3;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      text-decoration: none;
+      margin: 0.5rem;
+      transition: background-color 0.3s;
+    }
+    .button:hover {
+      background-color: #0051a2;
+    }
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .feature {
+      flex: 1 1 250px;
+      padding: 1rem;
+      border: 1px solid #eaeaea;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .feature h3 {
+      margin-top: 0;
+    }
+    .status {
+      padding: 0.5rem;
+      border-radius: 4px;
+      background-color: #f0f0f0;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+    .status.online {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .status.offline {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Elephant Detection</h1>
+    <p>A powerful tool for detecting elephants in images and video streams.</p>
+    
+    <div class="features">
+      <div class="feature">
+        <h3>Live Detection</h3>
+        <p>Detect elephants in real-time using your webcam.</p>
+      </div>
+      <div class="feature">
+        <h3>Image Analysis</h3>
+        <p>Upload images for elephant detection and analysis.</p>
+      </div>
+      <div class="feature">
+        <h3>Model Selection</h3>
+        <p>Choose from different detection models for optimal results.</p>
+      </div>
+    </div>
+    
+    <div>
+      <a href="https://github.com/HasalYapa/elephant-detection" class="button">View on GitHub</a>
+      <button id="check-status" class="button">Check API Status</button>
+    </div>
+    
+    <div id="status-display" style="margin-top: 1rem;"></div>
+  </div>
+
+  <script>
+    document.getElementById('check-status').addEventListener('click', async () => {
+      const statusDisplay = document.getElementById('status-display');
+      statusDisplay.innerHTML = 'Checking API status...';
+      
+      try {
+        const response = await fetch('/.netlify/functions/status');
+        if (response.ok) {
+          const data = await response.json();
+          statusDisplay.innerHTML = `
+            <div class="status online">
+              API Status: ${data.status}<br>
+              Message: ${data.message}<br>
+              Timestamp: ${new Date(data.timestamp).toLocaleString()}
+            </div>
+          `;
+        } else {
+          throw new Error(`API returned status ${response.status}`);
+        }
+      } catch (error) {
+        statusDisplay.innerHTML = `
+          <div class="status offline">
+            API Status: Offline<br>
+            Error: ${error.message}
+          </div>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>
