@@ -11,7 +11,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build:static": "next build && next export && cp -r public/* out/"
+    "build:static": "next build && next export && cp -r public/* out/",
+    "netlify-build": "echo 'No build needed for static site'"
   },
   "dependencies": {
     "cross-env": "^7.0.3",
