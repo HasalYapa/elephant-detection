@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { Camera, RefreshCcw, Video, Zap } from 'lucide-react'
 import BeepSound from '@/components/audio/BeepSound'
-import { stopAllSounds } from '@/lib' // Import from the index file
+import { stopAllSounds } from '@/lib/sound' // Import from the sound utility
 
 import { Detection } from './DetectionDisplay'
 

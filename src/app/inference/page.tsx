@@ -4,8 +4,12 @@ import { useState, useRef, useEffect } from 'react'
 import { Upload, FileUp, ImageIcon, X, Check, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import { Detection } from '@/components/video/DetectionDisplay'
-// Import from the index file to ensure proper module resolution
-import { getBackendUrl, loadModel, playSound, stopAllSounds } from '@/lib'
+// Import sound utilities
+import { playSound, stopAllSounds } from '@/lib/sound'
+
+// Import from the API adapter
+import { loadModel, detectImage } from '@/lib/api-adapter'
+
 import BeepSound from '@/components/audio/BeepSound'
 import BeepButton from '@/components/audio/BeepButton'
 
@@ -125,9 +129,7 @@ export default function InferencePage() {
     formData.append('file', selectedFile)
 
     try {
-      // Use the getBackendUrl helper function instead of hardcoded URL
-      const backendUrl = getBackendUrl();
-      console.log(`Sending image to: ${backendUrl}/api/detect-frame`);
+      console.log('Using Netlify Functions for detection');
 
       // Convert the image to base64 for the API
       const file = await selectedFile.arrayBuffer();
@@ -135,30 +137,13 @@ export default function InferencePage() {
       let binaryString = '';
       uint8Array.forEach(byte => binaryString += String.fromCharCode(byte));
       const base64 = btoa(binaryString);
+      const imageData = `data:image/jpeg;base64,${base64}`;
 
-      const response = await fetch(`${backendUrl}/api/detect-frame`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          frame: `data:image/jpeg;base64,${base64}`
-        })
-        // The backend expects a JSON object with a 'frame' property containing base64 data
-      })
+      // Use the detectImage function from our API adapter
+      const detectionResults = await detectImage(imageData);
+      console.log('Detection result:', detectionResults);
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ detail: response.statusText }))
-        throw new Error(`Failed to process image: ${response.status} ${errorData.detail || response.statusText}`)
-      }
-
-      const result = await response.json()
-      console.log('Detection result:', result)
-      // The backend returns absolute bbox coordinates [x1, y1, x2, y2]
-      // The Detection type expects normalized coordinates, but we only display text results here,
-      // so we can adapt the type or just use the data as is for display.
-      // For simplicity, let's assume the structure matches what the list expects.
-      const detectionResults = result.detections || []
+      // Set the detections in state
       setDetections(detectionResults)
 
       // Log the full detection results to see their structure

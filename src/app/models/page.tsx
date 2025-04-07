@@ -21,7 +21,7 @@ import {
   ChevronUp,
 } from "lucide-react";
 
-import { getAvailableModels, loadModel } from "@/lib";
+import { getAvailableModels, loadModel } from "@/lib/api-adapter";
 import ModelsList from "@/components/models/ModelsList";
 
 interface ModelInfo {
