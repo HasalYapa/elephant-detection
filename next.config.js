@@ -12,8 +12,10 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['localhost', 'vercel.app', 'elephant-detection.vercel.app'],
+    domains: ['localhost', 'vercel.app', 'elephant-detection.vercel.app', 'elephant-detection.netlify.app'],
     unoptimized: true,
+    loader: 'custom',
+    loaderFile: './src/lib/image-loader.js',
   },
   async rewrites() {
     return [
@@ -23,8 +25,8 @@ const nextConfig = {
       },
     ]
   },
-  // Disable server-side image optimization for Vercel deployment
-  output: 'standalone',
+  // Use export for static site generation
+  output: 'export',
   // Skip export errors
   experimental: {
     missingSuspenseWithCSRBailout: false,

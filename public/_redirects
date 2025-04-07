@@ -1,0 +1,7 @@
+# Netlify redirects file
+
+# Redirect API requests to Netlify Functions
+/api/*  /.netlify/functions/:splat  200
+
+# Handle Next.js routing
+/*  /index.html  200

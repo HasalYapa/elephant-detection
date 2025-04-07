@@ -11,7 +11,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "netlify-build": "CI=false NEXT_SKIP_EXPORT_ERRORS=true next build"
+    "netlify-build": "CI=false NEXT_SKIP_EXPORT_ERRORS=true next build && next export"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.5",
