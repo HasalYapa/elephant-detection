@@ -175,7 +175,9 @@ export default function DetectionPage() {
         // Check backend status and try to reconnect if backend is available
         checkBackendStatus()
           .then(status => {
-            if (status.ok) {
+            // Handle both boolean and object return types
+            const isAvailable = typeof status === 'boolean' ? status : status.ok;
+            if (isAvailable) {
               console.log('Backend is available but WebSocket disconnected - attempting to reconnect')
               retryConnection()
             }

@@ -1,6 +1,9 @@
-// Export all modules from the lib directory
-export * from './api';
+// Export sound utilities
 export * from './sound';
+
+// Export utility functions
 export * from './utils';
+
+// Export API functions through the adapter
+// This avoids conflicts between different API implementations
 export * from './api-adapter';
-export * from './netlify-api';

@@ -14,9 +14,37 @@ export const loadModel = useNetlifyFunctions
   ? NetlifyAPI.loadModel
   : LegacyAPI.loadModel;
 
+// Define a fallback detectImage function for legacy API
+const legacyDetectImage = async (imageData: string): Promise<Detection[]> => {
+  try {
+    // Use the getBackendUrl helper function from the legacy API
+    const backendUrl = LegacyAPI.getBackendUrl();
+
+    const response = await fetch(`${backendUrl}/api/detect-frame`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        frame: imageData
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result.detections || [];
+  } catch (error) {
+    console.error('Error detecting image:', error);
+    return [];
+  }
+};
+
 export const detectImage = useNetlifyFunctions
   ? NetlifyAPI.detectImage
-  : LegacyAPI.detectImage;
+  : legacyDetectImage;
 
 export const checkBackendStatus = useNetlifyFunctions
   ? NetlifyAPI.checkBackendStatus
