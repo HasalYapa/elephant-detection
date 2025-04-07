@@ -172,7 +172,7 @@ const ModelManagementPage = () => {
         {/* Left Column: Models List */}
         <div className="space-y-6">
           <ModelsList
-            onModelSelect={handleModelSelect}
+            onSelectModel={handleModelSelect}
             selectedModel={selectedModel || undefined}
           />
 

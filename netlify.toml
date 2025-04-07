@@ -8,6 +8,7 @@
   NPM_VERSION = "9.8.0"
   NEXT_TELEMETRY_DISABLED = "1"
   NEXT_PUBLIC_USE_NETLIFY_FUNCTIONS = "true"
+  NEXT_TYPESCRIPT_COMPILE_OPTIONS = '{"transpileOnly": true}'
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

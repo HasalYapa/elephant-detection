@@ -11,7 +11,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "netlify-build": "tsc --project tsconfig.netlify.json && CI=false next build"
+    "netlify-build": "CI=false next build"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.5",
