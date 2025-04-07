@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { RefreshCcw, UploadCloud, Check, AlertCircle, Loader2, Star, Database } from 'lucide-react';
-import { getAvailableModels, loadModel } from '@/lib/api';
+import { getAvailableModels, loadModel } from '@/lib/api-adapter';
 
 interface ModelDetails {
   name: string;
@@ -30,7 +30,7 @@ export default function ModelsList({
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [modelDetails, setModelDetails] = useState<ModelDetails[]>([]);
-  
+
   // Fetch models on component mount
   useEffect(() => {
     fetchModels();
@@ -55,11 +55,11 @@ export default function ModelsList({
     setLoading(true);
     setError(null);
     setRefreshing(true);
-    
+
     try {
       const availableModels = await getAvailableModels();
       setModels(availableModels);
-      
+
       // Auto-select first model if none selected
       if (!selectedModel && availableModels.length > 0) {
         onSelectModel(availableModels[0]);
@@ -77,7 +77,7 @@ export default function ModelsList({
   const formatModelName = (modelName: string) => {
     // Remove file extension
     const nameWithoutExtension = modelName.replace('.pt', '');
-    
+
     // Handle trained models
     if (nameWithoutExtension.startsWith('trained_')) {
       // Try to get model details from localStorage
@@ -86,7 +86,7 @@ export default function ModelsList({
         if (modelDetailsJson) {
           const modelDetails = JSON.parse(modelDetailsJson);
           const modelInfo = modelDetails.find((m: any) => m.name === modelName);
-          
+
           if (modelInfo) {
             return `${modelInfo.datasetName} (${formatAccuracy(modelInfo.accuracy)})`;
           }
@@ -94,7 +94,7 @@ export default function ModelsList({
       } catch (e) {
         console.error('Error parsing model details:', e);
       }
-      
+
       // If no details, format based on name
       const parts = nameWithoutExtension.split('_');
       if (parts.length >= 3) {
@@ -103,7 +103,7 @@ export default function ModelsList({
         return datasetName.charAt(0).toUpperCase() + datasetName.slice(1);
       }
     }
-    
+
     // Handle standard models
     switch (nameWithoutExtension) {
       case 'yolov8n':
@@ -122,7 +122,7 @@ export default function ModelsList({
         return nameWithoutExtension;
     }
   };
-  
+
   // Format accuracy to percentage
   const formatAccuracy = (accuracy: number) => {
     return `${Math.round(accuracy)}% accuracy`;
@@ -131,15 +131,15 @@ export default function ModelsList({
   // Handle model selection
   const handleModelSelect = async (modelName: string) => {
     if (modelName === selectedModel) return;
-    
+
     try {
       setLoadingModel(modelName);
       await loadModel(modelName);
-      
+
       if (onSelectModel) {
         onSelectModel(modelName);
       }
-      
+
       setLoadingModel(null);
     } catch (err) {
       setError(`Failed to load model: ${modelName}`);
@@ -172,13 +172,13 @@ export default function ModelsList({
           Refresh
         </button>
       </div>
-      
+
       {error && (
         <div className="text-destructive text-xs mb-2">
           {error}
         </div>
       )}
-      
+
       <div className="border border-border rounded-lg overflow-hidden">
         {models.length === 0 ? (
           <div className="p-4 text-center text-muted-foreground text-sm">
@@ -220,4 +220,4 @@ export default function ModelsList({
       )}
     </div>
   );
-} 
+}

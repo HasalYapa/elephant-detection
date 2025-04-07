@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { Bell, AlertTriangle, Calendar, Clock, ArrowUpRight, Trash, Loader2 } from 'lucide-react'
-// Import the new notification socket functions and disconnect function
-import { ElephantNotification, initNotificationSocket, disconnectNotificationSocket } from '@/lib/api' 
+// Import the notification socket functions from the API adapter
+import { ElephantNotification, initNotificationSocket, disconnectNotificationSocket } from '@/lib/api-adapter'
 // Keep forceReconnect if it's still used for the detection socket elsewhere, or remove if not needed.
 // For now, let's assume it might be used elsewhere or add a specific retry for notifications.
 
@@ -27,7 +27,7 @@ const formatDate = (timestamp: string): string => {
 // Group notifications by date
 const groupNotificationsByDate = (notifications: ElephantNotification[]) => {
   const grouped: Record<string, ElephantNotification[]> = {}
-  
+
   notifications.forEach(notification => {
     const date = new Date(notification.timestamp).toLocaleDateString()
     if (!grouped[date]) {
@@ -35,16 +35,16 @@ const groupNotificationsByDate = (notifications: ElephantNotification[]) => {
     }
     grouped[date].push(notification)
   })
-  
+
   // Convert to array of [date, notifications] pairs and sort by date (newest first)
   return Object.entries(grouped)
     .map(([date, items]) => ({
       date,
-      notifications: items.sort((a, b) => 
+      notifications: items.sort((a, b) =>
         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
       )
     }))
-    .sort((a, b) => 
+    .sort((a, b) =>
       new Date(b.date).getTime() - new Date(a.date).getTime()
     )
 }
@@ -54,7 +54,7 @@ export default function NotificationsPage() {
   const [isNotificationConnected, setIsNotificationConnected] = useState(false) // State specifically for notification socket
   const [isLoading, setIsLoading] = useState(true)
   const [notificationError, setNotificationError] = useState<string | null>(null) // Error state for notification socket
-  
+
   // Initialization
   useEffect(() => {
     // Load saved notifications from localStorage
@@ -70,7 +70,7 @@ export default function NotificationsPage() {
       }
       setIsLoading(false)
     }
-    
+
     loadSavedNotifications()
 
     // --- Notification Socket Setup ---
@@ -80,14 +80,14 @@ export default function NotificationsPage() {
         if (prev.some(n => n.id === notification.id)) {
           return prev
         }
-        
+
         // Add new notification at the beginning
         const updated = [notification, ...prev]
-        
+
         // Save to localStorage (limiting to 100 most recent)
         const toSave = updated.slice(0, 100)
         localStorage.setItem('elephantNotifications', JSON.stringify(toSave))
-        
+
         return updated
       })
     }
@@ -114,13 +114,13 @@ export default function NotificationsPage() {
       disconnectNotificationSocket();
     }
   }, []) // Empty dependency array ensures this runs only once on mount and cleanup on unmount
-  
+
   // Clear all notifications
   const clearNotifications = () => {
     setNotifications([])
     localStorage.removeItem('elephantNotifications')
   }
-  
+
   // Delete a single notification
   const deleteNotification = (id: string) => {
     setNotifications(prev => {
@@ -129,7 +129,7 @@ export default function NotificationsPage() {
       return updated
     })
   }
-  
+
   // Retry connection specifically for notifications
   const retryNotificationConnection = () => {
     setNotificationError(null); // Clear previous error
@@ -154,10 +154,10 @@ export default function NotificationsPage() {
        }
     );
   }
-  
+
   // Group notifications by date
   const groupedNotifications = groupNotificationsByDate(notifications)
-  
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center mb-6">
@@ -165,7 +165,7 @@ export default function NotificationsPage() {
           <Bell size={28} className="mr-3 text-primary" />
           Elephant Alerts
         </h1>
-        
+
         <div className="flex items-center space-x-3">
           {/* Display status for the notification socket */}
           {isNotificationConnected ? (
@@ -177,7 +177,7 @@ export default function NotificationsPage() {
               <span>Alerts Disconnected</span>
             </div>
           )}
-          
+
           <button
             onClick={clearNotifications}
             className="px-3 py-1 bg-destructive/10 text-destructive rounded-md text-sm hover:bg-destructive/20 transition-colors disabled:opacity-50"
@@ -187,7 +187,7 @@ export default function NotificationsPage() {
           </button>
         </div>
       </div>
-      
+
       {/* Display error specific to the notification connection */}
       {notificationError && (
         <div className="bg-destructive/10 border border-destructive text-destructive rounded-md p-4 mb-6 flex items-start">
@@ -204,7 +204,7 @@ export default function NotificationsPage() {
           </div>
         </div>
       )}
-      
+
       {isLoading ? (
         <div className="flex flex-col items-center justify-center p-10">
           <Loader2 size={40} className="animate-spin text-primary mb-4" />
@@ -215,7 +215,7 @@ export default function NotificationsPage() {
           <Bell size={40} className="mx-auto mb-4 text-muted-foreground" />
           <h3 className="text-lg font-medium mb-2">No elephant alerts yet</h3>
           <p className="text-muted-foreground max-w-md mx-auto">
-            When elephants are detected on the live detection feed, alerts will appear here. 
+            When elephants are detected on the live detection feed, alerts will appear here.
             Ensure your camera is running to receive notifications.
           </p>
         </div>
@@ -228,7 +228,7 @@ export default function NotificationsPage() {
                 <h3 className="font-medium">{formatDate(group.notifications[0].timestamp)}</h3>
                 <span className="ml-auto text-muted-foreground text-sm">{group.notifications.length} alerts</span>
               </div>
-              
+
               <div className="divide-y divide-border">
                 {group.notifications.map((notification) => (
                   <div key={notification.id} className="p-4 bg-card hover:bg-muted/50 transition-colors">
@@ -236,22 +236,22 @@ export default function NotificationsPage() {
                       <div className="bg-red-500/10 p-2 rounded-full mr-3">
                         <AlertTriangle size={18} className="text-red-500" />
                       </div>
-                      
+
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-1">
                           <h4 className="font-medium">{notification.message}</h4>
-                          <button 
+                          <button
                             onClick={() => deleteNotification(notification.id)}
                             className="text-muted-foreground hover:text-destructive p-1 rounded-full"
                           >
                             <Trash size={16} />
                           </button>
                         </div>
-                        
+
                         <div className="flex items-center text-sm text-muted-foreground mb-2">
                           <Clock size={14} className="mr-1" />
                           <span>{formatTime(notification.timestamp)}</span>
-                          
+
                           {/* Conditionally display confidence if available */}
                           {notification.confidence > 0 && (
                              <div className="ml-4 bg-amber-500/10 text-amber-600 px-2 py-0.5 rounded-full text-xs">
@@ -259,14 +259,14 @@ export default function NotificationsPage() {
                              </div>
                           )}
                         </div>
-                        
+
                         {/* Conditionally display image if available */}
-                        {notification.imageData && ( 
+                        {notification.imageData && (
                           <div className="mt-3 relative rounded-md overflow-hidden border border-border">
-                            <img 
-                              src={notification.imageData} 
-                              alt="Elephant detection" 
-                              className="w-full h-48 object-cover" 
+                            <img
+                              src={notification.imageData}
+                              alt="Elephant detection"
+                              className="w-full h-48 object-cover"
                             />
                             <button className="absolute top-2 right-2 bg-black/50 text-white p-1 rounded-full">
                               <ArrowUpRight size={14} />

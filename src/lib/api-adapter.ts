@@ -6,32 +6,32 @@ import { Detection } from '@/components/video/DetectionDisplay';
 const useNetlifyFunctions = process.env.NEXT_PUBLIC_USE_NETLIFY_FUNCTIONS === 'true';
 
 // Export the appropriate API functions based on the environment
-export const getAvailableModels = useNetlifyFunctions 
-  ? NetlifyAPI.getAvailableModels 
+export const getAvailableModels = useNetlifyFunctions
+  ? NetlifyAPI.getAvailableModels
   : LegacyAPI.getAvailableModels;
 
-export const loadModel = useNetlifyFunctions 
-  ? NetlifyAPI.loadModel 
+export const loadModel = useNetlifyFunctions
+  ? NetlifyAPI.loadModel
   : LegacyAPI.loadModel;
 
-export const detectImage = useNetlifyFunctions 
-  ? NetlifyAPI.detectImage 
+export const detectImage = useNetlifyFunctions
+  ? NetlifyAPI.detectImage
   : LegacyAPI.detectImage;
 
-export const checkBackendStatus = useNetlifyFunctions 
-  ? NetlifyAPI.checkBackendStatus 
+export const checkBackendStatus = useNetlifyFunctions
+  ? NetlifyAPI.checkBackendStatus
   : LegacyAPI.checkBackendStatus;
 
 // For WebSocket functionality, we need to handle differently
-export const initDetectionSocket = !useNetlifyFunctions 
-  ? LegacyAPI.initDetectionSocket 
+export const initDetectionSocket = !useNetlifyFunctions
+  ? LegacyAPI.initDetectionSocket
   : () => {
       console.log('WebSockets not supported with Netlify Functions, using polling instead');
       return { socket: null, connected: false };
     };
 
-export const sendFrameForDetection = !useNetlifyFunctions 
-  ? LegacyAPI.sendFrameForDetection 
+export const sendFrameForDetection = !useNetlifyFunctions
+  ? LegacyAPI.sendFrameForDetection
   : async (frame: string, callback: (detections: Detection[]) => void) => {
       // Use the REST API instead of WebSockets
       try {
@@ -44,16 +44,33 @@ export const sendFrameForDetection = !useNetlifyFunctions
       }
     };
 
-export const forceReconnect = !useNetlifyFunctions 
-  ? LegacyAPI.forceReconnect 
+export const forceReconnect = !useNetlifyFunctions
+  ? LegacyAPI.forceReconnect
   : () => {
       console.log('WebSockets not supported with Netlify Functions');
       return false;
     };
 
-export const checkConnectionAlive = !useNetlifyFunctions 
-  ? LegacyAPI.checkConnectionAlive 
+export const checkConnectionAlive = !useNetlifyFunctions
+  ? LegacyAPI.checkConnectionAlive
   : () => true;
 
 // Export other types and functions from the legacy API for compatibility
 export type { ElephantNotification } from './api';
+
+// Export notification functions
+export const initNotificationSocket = !useNetlifyFunctions
+  ? LegacyAPI.initNotificationSocket
+  : (onNotification: any, onConnectionChange: any) => {
+      console.log('WebSockets not supported with Netlify Functions, using polling for notifications');
+      // Return a mock implementation
+      return {
+        connected: true
+      };
+    };
+
+export const disconnectNotificationSocket = !useNetlifyFunctions
+  ? LegacyAPI.disconnectNotificationSocket
+  : () => {
+      console.log('WebSockets not supported with Netlify Functions');
+    };

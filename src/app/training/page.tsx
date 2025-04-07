@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+// Import from legacy API directly since these functions aren't in the adapter
 import { getDatasets, startTraining as apiStartTraining } from "@/lib/api";
 
 interface TrainingConfig {
@@ -32,7 +33,7 @@ export default function TrainingPage() {
     const fetchDatasets = async () => {
       try {
         setLoadingDatasets(true);
-        
+
         // First try to get datasets from localStorage
         if (typeof window !== 'undefined') {
           const saved = localStorage.getItem('uploadedDatasets');
@@ -52,7 +53,7 @@ export default function TrainingPage() {
             }
           }
         }
-        
+
         // If no datasets in localStorage, try from API
         try {
           const data = await getDatasets();
@@ -118,29 +119,29 @@ export default function TrainingPage() {
     apiStartTraining(trainingConfig)
       .then(response => {
         console.log("Training started:", response);
-        
+
         // Calculate how many progress updates we need for the full epoch count
         // Each 1% progress should represent multiple epochs when epoch count is high
         const totalEpochs = config.epochs;
         const progressPerEpoch = 100 / totalEpochs;
         let currentEpoch = 0;
-        
+
         // For demo purposes, we'll simulate progress with an accelerated timeline
         const interval = setInterval(() => {
           setProgress((prev) => {
             // Calculate which epoch we're on based on progress
             currentEpoch = Math.floor(prev / progressPerEpoch) + 1;
-            
+
             if (prev >= 100) {
               clearInterval(interval);
               setIsTraining(false);
-              
+
               // Generate the expected model name
               const now = new Date();
               const dateStr = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
               const baseModelType = config.model.replace('yolov8', '');
               const modelName = `trained_${datasetName.toLowerCase().replace(/\s+/g, '_')}_yolov8${baseModelType}_${dateStr}.pt`;
-              
+
               // Show a detailed success message
               alert(
                 `Training completed successfully!\n\n` +
@@ -152,7 +153,7 @@ export default function TrainingPage() {
                 `3. If not, select it from the models list\n` +
                 `4. Start detection using your webcam or IP camera`
               );
-              
+
               return 100;
             }
             return prev + 0.5; // Smaller increments to show more epochs
@@ -364,7 +365,7 @@ export default function TrainingPage() {
                   const epochNum = i + 1;
                   const loss = Math.max(8.24 - (epochNum / 20) * 4.72, 0.5).toFixed(2);
                   const mAP = Math.min((epochNum / config.epochs) * 0.85, 0.85).toFixed(2);
-                  
+
                   return (
                     <p key={epochNum}>
                       Epoch {epochNum}/{config.epochs}: loss={loss}, mAP={mAP}
