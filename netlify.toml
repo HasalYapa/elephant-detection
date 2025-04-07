@@ -1,6 +1,6 @@
 [build]
   # No build command needed for static site
-  publish = "."
+  publish = "public"
   functions = "netlify/functions"
 
 # Redirect API requests to Netlify Functions
