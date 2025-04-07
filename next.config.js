@@ -27,10 +27,12 @@ const nextConfig = {
   },
   // Use export for static site generation
   output: 'export',
-  // Skip export errors
+  // Skip export errors and configure for static export
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
+  trailingSlash: true,
+  distDir: '.next',
 
   // Explicitly configure module resolution
   webpack: (config) => {
