@@ -11,8 +11,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "netlify-build": "cross-env CI=false NEXT_SKIP_EXPORT_ERRORS=true next build && next export && npm run copy-public",
-    "copy-public": "node scripts/copy-public.js"
+    "build:static": "next build && next export && cp -r public/* out/"
   },
   "dependencies": {
     "cross-env": "^7.0.3",

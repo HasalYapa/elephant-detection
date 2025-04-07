@@ -3,5 +3,5 @@
 # Redirect API requests to Netlify Functions
 /api/*  /.netlify/functions/:splat  200
 
-# Handle Next.js routing
+# Handle all routes with SPA fallback
 /*  /index.html  200

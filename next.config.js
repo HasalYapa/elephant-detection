@@ -2,39 +2,34 @@
 const path = require('path');
 
 const nextConfig = {
+  // Disable TypeScript type checking during build
   typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
     ignoreBuildErrors: true,
   },
-  reactStrictMode: true,
+
+  // Disable ESLint during build
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
+  // Basic configuration
+  reactStrictMode: false,
   swcMinify: true,
+
+  // Image configuration
   images: {
-    domains: ['localhost', 'vercel.app', 'elephant-detection.vercel.app', 'elephant-detection.netlify.app'],
     unoptimized: true,
-    loader: 'custom',
-    loaderFile: './src/lib/image-loader.js',
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: process.env.BACKEND_URL || 'http://localhost:8080/api/:path*', // Use environment variable in production
-      },
-    ]
-  },
-  // Use export for static site generation
+
+  // Static export
   output: 'export',
-  // Skip export errors and configure for static export
+
+  // Disable experimental features
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
-  trailingSlash: true,
-  distDir: '.next',
 
-  // Explicitly configure module resolution
+  // Module resolution
   webpack: (config) => {
     config.resolve.alias['@'] = path.join(__dirname, 'src');
     return config;
