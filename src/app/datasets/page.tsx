@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Upload, X, Eye, Edit2, Trash2, AlertCircle, Loader2 } from "lucide-react";
@@ -53,7 +53,7 @@ const loadDatasets = (): Dataset[] => {
   ];
 };
 
-export default function DatasetsPage() {
+function DatasetPageContent() {
   const searchParams = useSearchParams();
   const [datasets, setDatasets] = useState<Dataset[]>([]);
 
@@ -69,7 +69,7 @@ export default function DatasetsPage() {
   const [selectedDataset, setSelectedDataset] = useState<Dataset | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  
+
   // Form state
   const [formData, setFormData] = useState({
     name: "",
@@ -103,31 +103,31 @@ export default function DatasetsPage() {
   const handleEditSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedDataset) return;
-    
+
     // Update dataset in state
-    const updatedDatasets = datasets.map(dataset => 
-      dataset.id === selectedDataset.id 
-        ? { ...dataset, name: formData.name } 
+    const updatedDatasets = datasets.map(dataset =>
+      dataset.id === selectedDataset.id
+        ? { ...dataset, name: formData.name }
         : dataset
     );
-    
+
     setDatasets(updatedDatasets);
     saveDatasets(updatedDatasets); // Save to localStorage
     setShowEditModal(false);
-    
+
     // Show a success message (you could use a toast here)
     alert(`Dataset "${formData.name}" updated successfully!`);
   };
 
   const handleDeleteSubmit = () => {
     if (!selectedDataset) return;
-    
+
     // Remove dataset from state
     const updatedDatasets = datasets.filter(dataset => dataset.id !== selectedDataset.id);
     setDatasets(updatedDatasets);
     saveDatasets(updatedDatasets); // Save to localStorage
     setShowDeleteModal(false);
-    
+
     // Show a success message
     alert(`Dataset "${selectedDataset.name}" deleted successfully!`);
   };
@@ -141,15 +141,15 @@ export default function DatasetsPage() {
   const handleUploadSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedFile) return;
-    
+
     // Simulate upload process
     setIsUploading(true);
-    
+
     const interval = setInterval(() => {
       setUploadProgress(prev => {
         if (prev >= 100) {
           clearInterval(interval);
-          
+
           // Add new dataset to state after "upload" completes
           setTimeout(() => {
             const newDataset: Dataset = {
@@ -160,21 +160,21 @@ export default function DatasetsPage() {
               dateCreated: new Date().toISOString().split('T')[0],
               size: `${(selectedFile.size / (1024 * 1024 * 1024)).toFixed(1)} GB`
             };
-            
+
             const updatedDatasets = [...datasets, newDataset];
             setDatasets(updatedDatasets);
             saveDatasets(updatedDatasets); // Save to localStorage
-            
+
             setIsUploading(false);
             setUploadProgress(0);
             setShowUploadModal(false);
             setSelectedFile(null);
             setFormData({ name: "", description: "" });
-            
+
             // Show success message
             alert(`Dataset "${newDataset.name}" uploaded successfully!`);
           }, 500);
-          
+
           return 100;
         }
         return prev + 5;
@@ -186,7 +186,7 @@ export default function DatasetsPage() {
     <div className="container mx-auto py-8 px-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Dataset Management</h1>
-        <button 
+        <button
           onClick={() => setShowUploadModal(true)}
           className="bg-primary text-primary-foreground px-4 py-2 rounded hover:bg-primary/90 flex items-center gap-2"
         >
@@ -220,21 +220,21 @@ export default function DatasetsPage() {
                   <td className="px-4 py-3">{dataset.dateCreated}</td>
                   <td className="px-4 py-3">{dataset.size}</td>
                   <td className="px-4 py-3 flex space-x-2">
-                    <Link 
+                    <Link
                       href={`/datasets/${dataset.id}`}
                       className="text-primary hover:text-primary/80 flex items-center gap-1"
                     >
                       <Eye size={16} />
                       View
                     </Link>
-                    <button 
+                    <button
                       onClick={() => handleEditDataset(dataset)}
                       className="text-primary hover:text-primary/80 flex items-center gap-1"
                     >
                       <Edit2 size={16} />
                       Edit
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleDeleteDataset(dataset)}
                       className="text-destructive hover:text-destructive/80 flex items-center gap-1"
                     >
@@ -287,7 +287,7 @@ export default function DatasetsPage() {
           <div className="bg-card rounded-lg shadow-lg w-full max-w-md p-6 mx-4">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Upload New Dataset</h2>
-              <button 
+              <button
                 onClick={() => setShowUploadModal(false)}
                 className="text-muted-foreground hover:text-foreground"
               >
@@ -299,8 +299,8 @@ export default function DatasetsPage() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Dataset Name</label>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     placeholder="e.g., Elephant Dataset 3"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
@@ -310,7 +310,7 @@ export default function DatasetsPage() {
 
                 <div>
                   <label className="block text-sm font-medium mb-1">Description (Optional)</label>
-                  <textarea 
+                  <textarea
                     placeholder="Describe your dataset..."
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
@@ -327,7 +327,7 @@ export default function DatasetsPage() {
                         <p className="text-sm text-muted-foreground mt-1">
                           {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
                         </p>
-                        <button 
+                        <button
                           type="button"
                           onClick={() => setSelectedFile(null)}
                           className="mt-2 text-sm text-destructive hover:text-destructive/80"
@@ -348,7 +348,7 @@ export default function DatasetsPage() {
                           onChange={handleFileChange}
                           className="hidden"
                         />
-                        <label 
+                        <label
                           htmlFor="dataset-file"
                           className="inline-block bg-primary/10 text-primary px-3 py-1 rounded text-sm cursor-pointer"
                         >
@@ -366,8 +366,8 @@ export default function DatasetsPage() {
                       <span>{uploadProgress}%</span>
                     </div>
                     <div className="w-full bg-muted rounded-full h-2 mb-4">
-                      <div 
-                        className="bg-primary h-2 rounded-full transition-all duration-200" 
+                      <div
+                        className="bg-primary h-2 rounded-full transition-all duration-200"
                         style={{ width: `${uploadProgress}%` }}
                       ></div>
                     </div>
@@ -417,7 +417,7 @@ export default function DatasetsPage() {
           <div className="bg-card rounded-lg shadow-lg w-full max-w-md p-6 mx-4">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Edit Dataset</h2>
-              <button 
+              <button
                 onClick={() => setShowEditModal(false)}
                 className="text-muted-foreground hover:text-foreground"
               >
@@ -429,8 +429,8 @@ export default function DatasetsPage() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Dataset Name</label>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                     className="w-full p-2 bg-muted/50 border border-border rounded focus:outline-none focus:ring-1 focus:ring-primary"
@@ -439,7 +439,7 @@ export default function DatasetsPage() {
 
                 <div>
                   <label className="block text-sm font-medium mb-1">Description</label>
-                  <textarea 
+                  <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
                     className="w-full p-2 bg-muted/50 border border-border rounded focus:outline-none focus:ring-1 focus:ring-primary h-20"
@@ -500,5 +500,13 @@ export default function DatasetsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function DatasetsPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center"><Loader2 className="animate-spin h-8 w-8 mx-auto" /></div>}>
+      <DatasetPageContent />
+    </Suspense>
   );
 }

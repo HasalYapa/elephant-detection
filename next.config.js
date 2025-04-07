@@ -25,6 +25,10 @@ const nextConfig = {
   },
   // Disable server-side image optimization for Vercel deployment
   output: 'standalone',
+  // Skip export errors
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
 
   // Explicitly configure module resolution
   webpack: (config) => {
