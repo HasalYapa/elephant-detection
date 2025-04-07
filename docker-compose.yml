@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    environment:
+      # Use the service name 'backend' for inter-container communication
+      - NEXT_PUBLIC_BACKEND_URL=backend 
+      - NEXT_PUBLIC_BACKEND_PORT=8000
+      - NEXT_PUBLIC_BACKEND_PROTOCOL=http
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./models:/app/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

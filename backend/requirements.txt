@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+websockets
+numpy
+opencv-python-headless
+ultralytics
+python-multipart
+pydantic
+pillow
+python-socketio # For real-time notifications via WebSocket
