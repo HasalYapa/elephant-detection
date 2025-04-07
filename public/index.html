@@ -83,7 +83,7 @@
   <div class="container">
     <h1>Elephant Detection</h1>
     <p>A powerful tool for detecting elephants in images and video streams.</p>
-    
+
     <div class="features">
       <div class="feature">
         <h3>Live Detection</h3>
@@ -98,43 +98,10 @@
         <p>Choose from different detection models for optimal results.</p>
       </div>
     </div>
-    
+
     <div>
       <a href="https://github.com/HasalYapa/elephant-detection" class="button">View on GitHub</a>
-      <button id="check-status" class="button">Check API Status</button>
     </div>
-    
-    <div id="status-display" style="margin-top: 1rem;"></div>
   </div>
-
-  <script>
-    document.getElementById('check-status').addEventListener('click', async () => {
-      const statusDisplay = document.getElementById('status-display');
-      statusDisplay.innerHTML = 'Checking API status...';
-      
-      try {
-        const response = await fetch('/.netlify/functions/status');
-        if (response.ok) {
-          const data = await response.json();
-          statusDisplay.innerHTML = `
-            <div class="status online">
-              API Status: ${data.status}<br>
-              Message: ${data.message}<br>
-              Timestamp: ${new Date(data.timestamp).toLocaleString()}
-            </div>
-          `;
-        } else {
-          throw new Error(`API returned status ${response.status}`);
-        }
-      } catch (error) {
-        statusDisplay.innerHTML = `
-          <div class="status offline">
-            API Status: Offline<br>
-            Error: ${error.message}
-          </div>
-        `;
-      }
-    });
-  </script>
 </body>
 </html>

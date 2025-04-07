@@ -1,12 +1,6 @@
 [build]
   publish = "public"
 
-# Redirect API requests to Netlify Functions
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
-
 # Handle all routes with SPA fallback
 [[redirects]]
   from = "/*"
