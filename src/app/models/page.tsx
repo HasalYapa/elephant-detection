@@ -21,7 +21,7 @@ import {
   ChevronUp,
 } from "lucide-react";
 
-import { getAvailableModels, loadModel } from "@/lib/api";
+import { getAvailableModels, loadModel } from "@/lib";
 import ModelsList from "@/components/models/ModelsList";
 
 interface ModelInfo {
@@ -65,16 +65,16 @@ const ModelManagementPage = () => {
         type: selectedModel.includes("yolov8") ? "YOLO v8" : "Custom Model",
         size: `${Math.floor(Math.random() * 200) + 10} MB`,
         dateAdded: new Date().toISOString().split("T")[0],
-        description: selectedModel.includes("elephant") 
+        description: selectedModel.includes("elephant")
           ? "Custom model trained specifically for elephant detection in various environments."
           : "Pre-trained YOLO model capable of detecting 80 different object classes including elephants.",
         accuracy: Math.random() * 15 + 75, // 75-90% accuracy
-        classes: selectedModel.includes("elephant") 
-          ? ["elephant", "human", "vehicle"] 
+        classes: selectedModel.includes("elephant")
+          ? ["elephant", "human", "vehicle"]
           : ["person", "car", "truck", "elephant", "zebra", "giraffe", "..."],
         trainedBy: selectedModel.includes("elephant") ? "Your Organization" : "Ultralytics",
       };
-      
+
       setModelInfo(mockInfo);
     } else {
       setModelInfo(null);
@@ -86,11 +86,11 @@ const ModelManagementPage = () => {
       setLoadingModels(true);
       const modelList = await getAvailableModels();
       setModels(modelList);
-      
+
       if (modelList.length > 0 && !selectedModel) {
         setSelectedModel(modelList[0]);
       }
-      
+
       setLoadingModels(false);
     } catch (error) {
       console.error("Failed to fetch models:", error);
@@ -114,47 +114,47 @@ const ModelManagementPage = () => {
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!modelFile) {
       setUploadError("Please select a model file to upload");
       return;
     }
-    
+
     if (!modelFile.name.endsWith(".pt")) {
       setUploadError("Only .pt model files are supported");
       return;
     }
-    
+
     try {
       setUploadingModel(true);
       setUploadProgress(0);
       setUploadError(null);
-      
+
       // Simulate upload progress for demo
       const interval = setInterval(() => {
         setUploadProgress(prev => {
           if (prev >= 100) {
             clearInterval(interval);
-            
+
             // Simulate api call completion after upload is done
             setTimeout(() => {
               setUploadingModel(false);
               setModelFile(null);
               fetchModels(); // Refresh the models list
-              
+
               // Select the newly uploaded model
               setSelectedModel(modelFile.name);
-              
+
               // Reset upload progress
               setUploadProgress(0);
             }, 500);
-            
+
             return 100;
           }
           return prev + 5;
         });
       }, 200);
-      
+
     } catch (error) {
       console.error("Upload failed:", error);
       setUploadError("Failed to upload model. Please try again.");
@@ -171,15 +171,15 @@ const ModelManagementPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Models List */}
         <div className="space-y-6">
-          <ModelsList 
+          <ModelsList
             onModelSelect={handleModelSelect}
             selectedModel={selectedModel || undefined}
           />
-          
+
           {/* Upload Form */}
           <div className="bg-card border border-border rounded-lg p-4">
             <h3 className="font-medium mb-4">Upload New Model</h3>
-            
+
             <form onSubmit={handleUpload}>
               {uploadError && (
                 <div className="bg-destructive/10 border border-destructive text-destructive rounded-md p-3 mb-4 flex items-start text-sm">
@@ -187,7 +187,7 @@ const ModelManagementPage = () => {
                   <div>{uploadError}</div>
                 </div>
               )}
-              
+
               <div className="mb-4">
                 <div className={`border-2 border-dashed p-4 rounded-lg text-center ${
                   modelFile ? 'border-primary/50' : 'border-border'
@@ -198,7 +198,7 @@ const ModelManagementPage = () => {
                       <p className="text-sm text-muted-foreground mt-1">
                         {(modelFile.size / (1024 * 1024)).toFixed(2)} MB
                       </p>
-                      <button 
+                      <button
                         type="button"
                         onClick={() => setModelFile(null)}
                         className="mt-2 text-sm text-destructive hover:text-destructive/80"
@@ -219,7 +219,7 @@ const ModelManagementPage = () => {
                         onChange={handleFileChange}
                         className="hidden"
                       />
-                      <label 
+                      <label
                         htmlFor="model-file"
                         className="inline-block bg-primary/10 text-primary px-3 py-1 rounded text-sm cursor-pointer"
                       >
@@ -229,7 +229,7 @@ const ModelManagementPage = () => {
                   )}
                 </div>
               </div>
-              
+
               {uploadingModel && (
                 <div>
                   <div className="flex justify-between text-sm mb-1">
@@ -237,14 +237,14 @@ const ModelManagementPage = () => {
                     <span>{uploadProgress}%</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2 mb-4">
-                    <div 
-                      className="bg-primary h-2 rounded-full transition-all duration-200" 
+                    <div
+                      className="bg-primary h-2 rounded-full transition-all duration-200"
                       style={{ width: `${uploadProgress}%` }}
                     ></div>
                   </div>
                 </div>
               )}
-              
+
               <button
                 type="submit"
                 disabled={!modelFile || uploadingModel}
@@ -261,7 +261,7 @@ const ModelManagementPage = () => {
               </button>
             </form>
           </div>
-          
+
           {/* Info Box */}
           <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 text-sm">
             <h3 className="font-medium text-primary mb-2 flex items-center gap-2">
@@ -277,12 +277,12 @@ const ModelManagementPage = () => {
             </p>
           </div>
         </div>
-        
+
         {/* Right Column: Model Details */}
         <div className="col-span-2">
           {selectedModel && modelInfo ? (
             <div className="bg-card border border-border rounded-lg p-6">
-              <div 
+              <div
                 className="flex justify-between items-start mb-4 cursor-pointer"
                 onClick={() => setModelInfoExpanded(!modelInfoExpanded)}
               >
@@ -291,7 +291,7 @@ const ModelManagementPage = () => {
                   {modelInfoExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                 </button>
               </div>
-              
+
               {modelInfoExpanded && (
                 <>
                   <div className="flex flex-wrap gap-4 mb-6">
@@ -308,19 +308,19 @@ const ModelManagementPage = () => {
                       {modelInfo.size}
                     </div>
                   </div>
-                
+
                   <div className="space-y-6">
                     <div>
                       <h3 className="text-lg font-medium mb-2">Description</h3>
                       <p className="text-muted-foreground">{modelInfo.description}</p>
                     </div>
-                    
+
                     <div>
                       <h3 className="text-lg font-medium mb-2">Classes</h3>
                       <div className="flex flex-wrap gap-2">
                         {modelInfo.classes.map((cls, index) => (
-                          <span 
-                            key={index} 
+                          <span
+                            key={index}
                             className="bg-muted px-2 py-1 rounded text-sm"
                           >
                             {cls}
@@ -328,7 +328,7 @@ const ModelManagementPage = () => {
                         ))}
                       </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <h3 className="text-lg font-medium mb-2">Details</h3>
@@ -350,7 +350,7 @@ const ModelManagementPage = () => {
                           </li>
                         </ul>
                       </div>
-                      
+
                       <div>
                         <h3 className="text-lg font-medium mb-2">Actions</h3>
                         <div className="space-y-2">
@@ -373,7 +373,7 @@ const ModelManagementPage = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Performance Metrics */}
                     <div className="mt-8">
                       <Tabs defaultValue="overview">
@@ -382,14 +382,14 @@ const ModelManagementPage = () => {
                           <TabsTrigger value="metrics">Metrics</TabsTrigger>
                           <TabsTrigger value="history">History</TabsTrigger>
                         </TabsList>
-                        
+
                         <TabsContent value="overview">
                           <div className="p-4 border rounded-md mt-4">
                             <h4 className="font-medium mb-2">Model Performance Overview</h4>
                             <p className="text-sm text-muted-foreground mb-4">
                               This model has been tested on various datasets and environments.
                             </p>
-                            
+
                             <div className="space-y-4">
                               <div>
                                 <div className="flex justify-between text-sm mb-1">
@@ -397,34 +397,34 @@ const ModelManagementPage = () => {
                                   <span className="font-medium">{(modelInfo.accuracy * 0.95).toFixed(1)}%</span>
                                 </div>
                                 <div className="w-full bg-muted rounded-full h-2">
-                                  <div 
-                                    className="bg-blue-500 h-2 rounded-full" 
+                                  <div
+                                    className="bg-blue-500 h-2 rounded-full"
                                     style={{ width: `${modelInfo.accuracy * 0.95}%` }}
                                   ></div>
                                 </div>
                               </div>
-                              
+
                               <div>
                                 <div className="flex justify-between text-sm mb-1">
                                   <span>Recall</span>
                                   <span className="font-medium">{(modelInfo.accuracy * 0.9).toFixed(1)}%</span>
                                 </div>
                                 <div className="w-full bg-muted rounded-full h-2">
-                                  <div 
-                                    className="bg-green-500 h-2 rounded-full" 
+                                  <div
+                                    className="bg-green-500 h-2 rounded-full"
                                     style={{ width: `${modelInfo.accuracy * 0.9}%` }}
                                   ></div>
                                 </div>
                               </div>
-                              
+
                               <div>
                                 <div className="flex justify-between text-sm mb-1">
                                   <span>mAP50</span>
                                   <span className="font-medium">{(modelInfo.accuracy * 1.05).toFixed(1)}%</span>
                                 </div>
                                 <div className="w-full bg-muted rounded-full h-2">
-                                  <div 
-                                    className="bg-purple-500 h-2 rounded-full" 
+                                  <div
+                                    className="bg-purple-500 h-2 rounded-full"
                                     style={{ width: `${modelInfo.accuracy * 1.05}%` }}
                                   ></div>
                                 </div>
@@ -432,7 +432,7 @@ const ModelManagementPage = () => {
                             </div>
                           </div>
                         </TabsContent>
-                        
+
                         <TabsContent value="metrics">
                           <div className="p-4 border rounded-md mt-4">
                             <h4 className="font-medium mb-2">Detailed Metrics</h4>
@@ -441,7 +441,7 @@ const ModelManagementPage = () => {
                             </p>
                           </div>
                         </TabsContent>
-                        
+
                         <TabsContent value="history">
                           <div className="p-4 border rounded-md mt-4">
                             <h4 className="font-medium mb-2">Model History</h4>
@@ -471,4 +471,4 @@ const ModelManagementPage = () => {
   );
 };
 
-export default ModelManagementPage; 
+export default ModelManagementPage;

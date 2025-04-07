@@ -4,10 +4,10 @@ import { useState, useRef, useEffect } from 'react'
 import { Upload, FileUp, ImageIcon, X, Check, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import { Detection } from '@/components/video/DetectionDisplay'
-import { getBackendUrl, loadModel } from '@/lib/api' // Import the helper functions
+// Import from the index file to ensure proper module resolution
+import { getBackendUrl, loadModel, playSound, stopAllSounds } from '@/lib'
 import BeepSound from '@/components/audio/BeepSound'
 import BeepButton from '@/components/audio/BeepButton'
-import { playSound, stopAllSounds } from '@/lib/sound' // Import the sound utilities
 
 export default function InferencePage() {
   // Load the best.pt model when the page loads

@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const path = require('path');
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -16,6 +18,12 @@ const nextConfig = {
   },
   // Disable server-side image optimization for Vercel deployment
   output: 'standalone',
+
+  // Explicitly configure module resolution
+  webpack: (config) => {
+    config.resolve.alias['@'] = path.join(__dirname, 'src');
+    return config;
+  },
 }
 
 module.exports = nextConfig

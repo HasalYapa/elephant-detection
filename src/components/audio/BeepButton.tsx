@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
-import { playSound } from '@/lib/sound';
+import { playSound } from '@/lib';
 
 interface BeepButtonProps {
   label?: string;

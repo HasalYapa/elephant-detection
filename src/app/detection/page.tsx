@@ -22,8 +22,10 @@ import ModelsList from '@/components/models/ModelsList'
 import ModelUpload from '@/components/models/ModelUpload'
 import BeepSound from '@/components/audio/BeepSound'
 import BeepButton from '@/components/audio/BeepButton'
-import { playSound, stopAllSounds } from '@/lib/sound' // Import the sound utilities
+// Import from the index file to ensure proper module resolution
 import {
+  playSound,
+  stopAllSounds,
   initDetectionSocket,
   sendFrameForDetection,
   forceReconnect,
@@ -31,7 +33,7 @@ import {
   loadModel,
   checkConnectionAlive,
   ElephantNotification
-} from '@/lib/api'
+} from '@/lib'
 
 type VideoSource = 'webcam' | 'rtsp'
 
