@@ -5,6 +5,15 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Database, Image, Edit2, Trash2, Download, Play } from "lucide-react";
 
+// This function is required for static export with dynamic routes
+export function generateStaticParams() {
+  // Pre-render only these dataset IDs at build time
+  return [
+    { id: '1' },
+    { id: '2' },
+  ];
+}
+
 interface Dataset {
   id: string;
   name: string;
@@ -86,8 +95,8 @@ export default function DatasetDetailPage({ params }: { params: { id: string } }
       <div className="text-center py-10">
         <h1 className="text-2xl font-bold mb-4">Dataset Not Found</h1>
         <p className="text-muted-foreground mb-6">The dataset you're looking for doesn't exist or has been deleted.</p>
-        <Link 
-          href="/datasets" 
+        <Link
+          href="/datasets"
           className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90"
         >
           <ArrowLeft size={16} className="mr-2" />
@@ -100,17 +109,17 @@ export default function DatasetDetailPage({ params }: { params: { id: string } }
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="mb-6">
-        <Link 
-          href="/datasets" 
+        <Link
+          href="/datasets"
           className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4"
         >
           <ArrowLeft size={16} className="mr-1" />
           Back to datasets
         </Link>
-        
+
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <h1 className="text-3xl font-bold">{dataset.name}</h1>
-          
+
           <div className="flex items-center gap-2">
             <button className="px-3 py-1.5 text-sm border border-border rounded hover:bg-muted/50 flex items-center gap-1">
               <Edit2 size={16} />
@@ -127,12 +136,12 @@ export default function DatasetDetailPage({ params }: { params: { id: string } }
           </div>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <div className="lg:col-span-2">
           <div className="bg-card rounded-lg shadow p-6">
             <h2 className="text-xl font-semibold mb-4">Dataset Information</h2>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               <div>
                 <p className="text-sm text-muted-foreground">Name</p>
@@ -161,11 +170,11 @@ export default function DatasetDetailPage({ params }: { params: { id: string } }
             </div>
           </div>
         </div>
-        
+
         <div>
           <div className="bg-card rounded-lg shadow p-6">
             <h2 className="text-xl font-semibold mb-4">Dataset Stats</h2>
-            
+
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between mb-1">
@@ -173,13 +182,13 @@ export default function DatasetDetailPage({ params }: { params: { id: string } }
                   <span className="text-sm font-medium">{Math.round(dataset.annotations / dataset.images * 100)}%</span>
                 </div>
                 <div className="w-full bg-muted rounded-full h-2">
-                  <div 
-                    className="bg-primary h-2 rounded-full" 
+                  <div
+                    className="bg-primary h-2 rounded-full"
                     style={{ width: `${Math.round(dataset.annotations / dataset.images * 100)}%` }}
                   ></div>
                 </div>
               </div>
-              
+
               <div>
                 <div className="flex justify-between mb-1">
                   <span className="text-sm">Class distribution</span>
@@ -218,13 +227,13 @@ export default function DatasetDetailPage({ params }: { params: { id: string } }
           </div>
         </div>
       </div>
-      
+
       <div className="bg-card rounded-lg shadow p-6 mb-8">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Sample Images</h2>
           <button className="text-sm text-primary hover:text-primary/80">View all images</button>
         </div>
-        
+
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {/* For demo purposes, we'll show empty placeholders */}
           {Array(6).fill(0).map((_, i) => (
@@ -237,12 +246,12 @@ export default function DatasetDetailPage({ params }: { params: { id: string } }
           ))}
         </div>
       </div>
-      
+
       <div className="bg-card rounded-lg shadow p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Training History</h2>
         </div>
-        
+
         {/* Empty state */}
         <div className="text-center py-8">
           <Database size={40} className="mx-auto text-muted-foreground mb-3" />
@@ -256,4 +265,4 @@ export default function DatasetDetailPage({ params }: { params: { id: string } }
       </div>
     </div>
   );
-} 
+}
