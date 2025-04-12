@@ -1,0 +1,59 @@
+{
+  "nav": {
+    "home": "முகப்பு",
+    "siteAnalyzer": "தள பகுப்பாய்வி",
+    "designAssistant": "வடிவமைப்பு உதவியாளர்",
+    "climateExplorer": "காலநிலை ஆய்வாளர்",
+    "codeHelper": "குறியீடு உதவியாளர்",
+    "mapDashboard": "வரைபட கட்டுப்பாட்டு பலகை"
+  },
+  "footer": {
+    "copyright": "© 2025 CiviWise - இலங்கைக்கான புத்திசாலித்தனமான சிவில் பொறியியல் தளம்"
+  },
+  "languageSelector": {
+    "language": "மொழி",
+    "english": "ஆங்கிலம்",
+    "sinhala": "சிங்களம்",
+    "tamil": "தமிழ்",
+    "savePreference": "விருப்பத்தை சேமி"
+  },
+  "climateScore": {
+    "title": "காலநிலை புத்திசாலித்தன மதிப்பெண்",
+    "excellent": "மிக சிறந்தது",
+    "good": "நல்லது",
+    "average": "சராசரி",
+    "belowAverage": "சராசரிக்கு கீழ்",
+    "poor": "மோசமானது",
+    "floodScore": "வெள்ள நெகிழ்திறன்",
+    "heatScore": "வெப்ப மேலாண்மை",
+    "waterScore": "நீர் மேலாண்மை",
+    "erosionScore": "அரிப்பு கட்டுப்பாடு",
+    "badges": "பெற்ற பதக்கங்கள்",
+    "floodMaster": "வெள்ள நிபுணர்",
+    "heatTamer": "வெப்ப கட்டுப்படுத்தி",
+    "waterWizard": "நீர் வித்தகர்",
+    "climateChampion": "காலநிலை சாம்பியன்",
+    "share": "பகிர்",
+    "recommendations": "மேம்பாட்டு பரிந்துரைகள்"
+  },
+  "common": {
+    "loading": "ஏற்றுகிறது...",
+    "error": "பிழை",
+    "success": "வெற்றி",
+    "submit": "சமர்ப்பி",
+    "cancel": "ரத்து செய்",
+    "save": "சேமி",
+    "edit": "திருத்து",
+    "delete": "நீக்கு",
+    "view": "காண்",
+    "download": "பதிவிறக்கு",
+    "search": "தேடு",
+    "filter": "வடிகட்டு",
+    "reset": "மீட்டமை",
+    "more": "மேலும்",
+    "less": "குறைவாக",
+    "next": "அடுத்து",
+    "previous": "முந்தைய",
+    "back": "பின்செல்"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "nav": {
+    "home": "මුල් පිටුව",
+    "siteAnalyzer": "භූමි විශ්ලේෂකය",
+    "designAssistant": "නිර්මාණ සහායකය",
+    "climateExplorer": "දේශගුණ ගවේෂකය",
+    "codeHelper": "නීති උපකාරකය",
+    "mapDashboard": "සිතියම් උපකරණ පුවරුව"
+  },
+  "footer": {
+    "copyright": "© 2025 CiviWise - ශ්‍රී ලංකාව සඳහා වූ බුද්ධිමත් සිවිල් ඉංජිනේරු වේදිකාව"
+  },
+  "languageSelector": {
+    "language": "භාෂාව",
+    "english": "ඉංග්‍රීසි",
+    "sinhala": "සිංහල",
+    "tamil": "දෙමළ",
+    "savePreference": "මනාපය සුරකින්න"
+  },
+  "climateScore": {
+    "title": "දේශගුණික බුද්ධිමත් ලකුණු",
+    "excellent": "විශිෂ්ටයි",
+    "good": "හොඳයි",
+    "average": "සාමාන්යයි",
+    "belowAverage": "සාමාන්යයට අඩුයි",
+    "poor": "දුර්වලයි",
+    "floodScore": "ගංවතුර ප්‍රතිරෝධය",
+    "heatScore": "තාප කළමනාකරණය",
+    "waterScore": "ජල කළමනාකරණය",
+    "erosionScore": "ඛාදන පාලනය",
+    "badges": "දිනාගත් පදක්කම්",
+    "floodMaster": "ගංවතුර විශේෂඥ",
+    "heatTamer": "තාප පාලක",
+    "waterWizard": "ජල විශාරද",
+    "climateChampion": "දේශගුණ ශූරයා",
+    "share": "බෙදාගන්න",
+    "recommendations": "වැඩිදියුණු කිරීමේ නිර්දේශ"
+  },
+  "common": {
+    "loading": "පූරණය වෙමින්...",
+    "error": "දෝෂයකි",
+    "success": "සාර්ථකයි",
+    "submit": "ඉදිරිපත් කරන්න",
+    "cancel": "අවලංගු කරන්න",
+    "save": "සුරකින්න",
+    "edit": "සංස්කරණය කරන්න",
+    "delete": "මකන්න",
+    "view": "බලන්න",
+    "download": "බාගත කරන්න",
+    "search": "සොයන්න",
+    "filter": "පෙරන්න",
+    "reset": "යළි පිහිටුවන්න",
+    "more": "තවත්",
+    "less": "අඩුවෙන්",
+    "next": "ඊළඟ",
+    "previous": "පෙර",
+    "back": "ආපසු"
+  }
+}

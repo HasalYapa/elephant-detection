@@ -1,0 +1,59 @@
+{
+  "nav": {
+    "home": "Home",
+    "siteAnalyzer": "Site Analyzer",
+    "designAssistant": "Design Assistant",
+    "climateExplorer": "Climate Explorer",
+    "codeHelper": "Code Helper",
+    "mapDashboard": "Map Dashboard"
+  },
+  "footer": {
+    "copyright": "© 2025 CiviWise - Smart Civil Engineering Platform for Sri Lanka"
+  },
+  "languageSelector": {
+    "language": "Language",
+    "english": "English",
+    "sinhala": "Sinhala",
+    "tamil": "Tamil",
+    "savePreference": "Save Preference"
+  },
+  "climateScore": {
+    "title": "Climate Smart Score",
+    "excellent": "Excellent",
+    "good": "Good",
+    "average": "Average",
+    "belowAverage": "Below Average",
+    "poor": "Poor",
+    "floodScore": "Flood Resilience",
+    "heatScore": "Heat Management",
+    "waterScore": "Water Management",
+    "erosionScore": "Erosion Control",
+    "badges": "Earned Badges",
+    "floodMaster": "Flood Master",
+    "heatTamer": "Heat Tamer",
+    "waterWizard": "Water Wizard",
+    "climateChampion": "Climate Champion",
+    "share": "Share",
+    "recommendations": "Improvement Recommendations"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "download": "Download",
+    "search": "Search",
+    "filter": "Filter",
+    "reset": "Reset",
+    "more": "More",
+    "less": "Less",
+    "next": "Next",
+    "previous": "Previous",
+    "back": "Back"
+  }
+}
